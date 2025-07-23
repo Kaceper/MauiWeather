@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiWeather.MVVM.Views.WeatherView"
+             Title="WeatherView">
+
+    <Grid
+        Margin="15"
+        RowDefinitions=".08*,.1*, .5*, .1*, .3*">
+        
+        <Grid>
+            <Border BackgroundColor="LightGrey"/>
+            
+            <HorizontalStackLayout 
+                Padding="8, 0, 0, 0"
+                Margin="8"
+                Spacing="3"
+                VerticalOptions="Center"
+                BackgroundColor="White">
+
+                <Image 
+                    x:Name="SearchIcon"
+                    Source="search.png"
+                    Margin="0, 2, 0, 0"
+                    WidthRequest="20"
+                    HeightRequest="20"
+                    VerticalOptions="Center"/>
+                
+                <SearchBar 
+                    Placeholder="Szukaj..." 
+                    VerticalOptions="Center" 
+                    TextColor="Black" 
+                    BackgroundColor="Transparent" 
+                    Margin="0"/>
+            </HorizontalStackLayout>
+        </Grid>
+
+        <VerticalStackLayout Grid.Row="1" Style="{StaticResource MainStackLayout}">
+            <Label Style="{StaticResource Title}" Text="Paris"/>
+            <Label Text="23 lipca 2025 roku"/>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>
