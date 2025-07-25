@@ -1,43 +1,108 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiWeather.MVVM.Views.WeatherView"
-             Title="WeatherView">
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+    x:Class="MauiWeather.MVVM.Views.WeatherView"
+    Title="WeatherView">
 
-    <Grid
-        Margin="15"
-        RowDefinitions=".08*,.1*, .5*, .1*, .3*">
-        
-        <Grid>
-            <Border BackgroundColor="LightGrey"/>
-            
-            <HorizontalStackLayout 
-                Padding="8, 0, 0, 0"
-                Margin="8"
-                Spacing="3"
-                VerticalOptions="Center"
+    <ScrollView>
+        <VerticalStackLayout Padding="15" Spacing="20">
+
+            <!-- Pasek wyszukiwania -->
+            <Grid  
+                ColumnDefinitions="Auto, *, Auto" 
+                HeightRequest="50"
                 BackgroundColor="White">
 
                 <Image 
                     x:Name="SearchIcon"
+                    Grid.Column="0"
+                    Margin="10"
                     Source="search.png"
-                    Margin="0, 2, 0, 0"
                     WidthRequest="20"
                     HeightRequest="20"
                     VerticalOptions="Center"/>
-                
-                <SearchBar 
-                    Placeholder="Szukaj..." 
-                    VerticalOptions="Center" 
-                    TextColor="Black" 
-                    BackgroundColor="Transparent" 
-                    Margin="0"/>
-            </HorizontalStackLayout>
-        </Grid>
 
-        <VerticalStackLayout Grid.Row="1" Style="{StaticResource MainStackLayout}">
-            <Label Style="{StaticResource Title}" Text="Paris"/>
-            <Label Text="23 lipca 2025 roku"/>
+                <Entry
+                    x:Name="MyEntry"
+                    Placeholder="Szukaj..."
+                    Text="{Binding SearchText}"
+                    TextColor="Black"
+                    Grid.Column="1"
+                    BackgroundColor="Transparent"
+                    VerticalOptions="Center">
+                </Entry>
+            </Grid>
+
+            <!-- Miasto i data -->
+            <VerticalStackLayout>
+                <Label Style="{StaticResource Title}" Text="Paris"/>
+                <Label Text="23 lipca 2025 roku"/>
+            </VerticalStackLayout>
+
+            <!-- Animacja pogody -->
+            <skia:SKLottieView
+                RepeatCount="-1"
+                HeightRequest="300"
+                Source="partly-cloudy.json"/>
+
+            <!-- Pogoda (parametry) -->
+            <Grid
+                HeightRequest="100"
+                ColumnDefinitions="*, *, *"
+                Padding="0, 20, 0, 0">
+
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
+                    <Label Style="{StaticResource WeatherTitle}" Text="Temp."/>
+                    <Label Style="{StaticResource WeatherValue}" Text="16°C"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="10">
+                    <Label Style="{StaticResource WeatherTitle}" Text="Wiatr"/>
+                    <Label Style="{StaticResource WeatherValue}" Text="10 km/h"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center" Spacing="10">
+                    <Label Style="{StaticResource WeatherTitle}" Text="Pogoda"/>
+                    <Label Style="{StaticResource WeatherValue}" Text="Deszczowo"/>
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Prognoza (CollectionView) -->
+            <CollectionView>
+                <CollectionView.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>1</x:String>
+                        <x:String>2</x:String>
+                        <x:String>3</x:String>
+                        <x:String>4</x:String>
+                        <x:String>5</x:String>
+                    </x:Array>
+                </CollectionView.ItemsSource>
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal"/>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Style="{StaticResource Card}">
+                            <VerticalStackLayout VerticalOptions="Center">
+                                <skia:SKLottieView
+                                    IsAnimationEnabled="False"
+                                    HeightRequest="70"
+                                    WidthRequest="70"
+                                    Source="snow.json"/>
+                                
+                                <BoxView HeightRequest="20" BackgroundColor="Transparent"/>
+                                <Label TextColor="{StaticResource Yellow100Accent}" Text="08-02-2050"/>
+                                <Label TextColor="{StaticResource Yellow100Accent}" Text="20°C"/>
+                                <Label TextColor="{StaticResource Yellow100Accent}" Text="Słonecznie"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </VerticalStackLayout>
-    </Grid>
+    </ScrollView>
 </ContentPage>

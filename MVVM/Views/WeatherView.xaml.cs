@@ -1,3 +1,5 @@
+using MauiWeather.MVVM.ViewModels;
+
 namespace MauiWeather.MVVM.Views;
 
 public partial class WeatherView : ContentPage
@@ -7,9 +9,12 @@ public partial class WeatherView : ContentPage
 		InitializeComponent();
 		BindingContext = new ViewModels.WeatherViewModel();
 
-		if (DeviceInfo.Platform != DevicePlatform.WinUI)
-		{
-			SearchIcon.IsVisible = false;
-		}
+        MyEntry.Completed += (s, e) =>
+        {
+            if (BindingContext is WeatherViewModel vm && vm.SearchCommand.CanExecute(null))
+            {
+                vm.SearchCommand.Execute(null);
+            }
+        };
     }
 }

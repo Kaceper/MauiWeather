@@ -22,4 +22,23 @@
         <Setter Property="FontAttributes" Value="Bold"/>
         <Setter Property="FontSize" Value="Large"/>
     </Style>
+
+    <Style x:Key="WeatherTitle" TargetType="Label">
+        <Setter Property="FontFamily" Value="LatoLight"/>
+    </Style>
+
+    <Style x:Key="WeatherValue" TargetType="Label">
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="Card" TargetType="Frame">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource CardBlue}"/>
+        <Setter Property="BorderColor" Value="Transparent"/>
+        <Setter Property="CornerRadius" Value="15"/>
+        <Setter Property="HeightRequest" Value="180"/>
+        <Setter Property="WidthRequest" Value="150"/>
+        <Setter Property="Opacity" Value="90"/>
+    </Style>
 </ResourceDictionary>
