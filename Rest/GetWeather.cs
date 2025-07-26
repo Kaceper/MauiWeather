@@ -16,7 +16,7 @@ namespace MauiWeather.Rest
 
         public async Task<WeatherData> GetWeatherAsync(double latitude, double longitude)
         {
-            string url = $"https://api.open-meteo.com/v1/forecast?latitude={(latitude + "").Replace(",", ".")}&longitude={(longitude + "").Replace(",", ".")}&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m&timeformat=unixtime";
+            string url = $"https://api.open-meteo.com/v1/forecast?latitude={(latitude + "").Replace(",", ".")}&longitude={(longitude + "").Replace(",", ".")}&daily=weather_code,temperature_2m_max,temperature_2m_min,rain_sum,wind_speed_10m_max&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,rain,weather_code,wind_speed_10m&timeformat=unixtime";
             try
             {
                 var response = await httpClient.GetFromJsonAsync<WeatherData>(url);

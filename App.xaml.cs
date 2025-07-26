@@ -1,4 +1,4 @@
-﻿using MauiWeather.MVVM.Views;
+﻿using MauiWeather.Views;
 
 namespace MauiWeather
 {

@@ -2,7 +2,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
-    x:Class="MauiWeather.MVVM.Views.WeatherView"
+    x:Class="MauiWeather.Views.WeatherView"
+    x:Name="RootView"
     Title="WeatherView">
 
     <ScrollView>
@@ -36,8 +37,8 @@
 
             <!-- Miasto i data -->
             <VerticalStackLayout>
-                <Label Style="{StaticResource Title}" Text="Paris"/>
-                <Label Text="23 lipca 2025 roku"/>
+                <Label Style="{StaticResource Title}" Text="{Binding Source={x:Reference Name=RootView}, Path=PlaceName}"/>
+                <Label Text="{Binding Source={x:Reference Name=RootView}, Path=Date, StringFormat='{0:dddd, dd MMMM yyyy}'}"/>
             </VerticalStackLayout>
 
             <!-- Animacja pogody -->
@@ -54,17 +55,17 @@
 
                 <VerticalStackLayout HorizontalOptions="Center" Spacing="10" Grid.Column="1">
                     <Label Style="{StaticResource WeatherTitle}" Text="Temperatura"/>
-                    <Label Style="{StaticResource WeatherValue}" Text="16°C"/>
+                    <Label Style="{StaticResource WeatherValue}" Text="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.current.temperature_2m, StringFormat='{0}°C'}"/>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout HorizontalOptions="Center" Spacing="10" Grid.Column="2">
                     <Label Style="{StaticResource WeatherTitle}" Text="Wiatr"/>
-                    <Label Style="{StaticResource WeatherValue}" Text="10 km/h"/>
+                    <Label Style="{StaticResource WeatherValue}" Text="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.current.wind_speed_10m, StringFormat='{0}km/h'}"/>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout HorizontalOptions="Center" Spacing="10" Grid.Column="3">
                     <Label Style="{StaticResource WeatherTitle}" Text="Pogoda"/>
-                    <Label Style="{StaticResource WeatherValue}" Text="Deszczowo"/>
+                    <Label Style="{StaticResource WeatherValue}" Text="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.current.weather_code}"/>
                 </VerticalStackLayout>
             </Grid>
 

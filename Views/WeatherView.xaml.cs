@@ -3,18 +3,60 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.Devices.Sensors;
 using Newtonsoft.Json;
 using System;
+using System.ComponentModel;
 using System.Net.Http;
 
-namespace MauiWeather.MVVM.Views;
+namespace MauiWeather.Views;
 
-public partial class WeatherView : ContentPage
+public partial class WeatherView : ContentPage, INotifyPropertyChanged
 {
-    public WeatherData WeatherData { get; set; }
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private WeatherData _weatherData;
+    public WeatherData WeatherData
+    {
+        get => _weatherData;
+        set
+        {
+            if (_weatherData != value)
+            {
+                _weatherData = value;
+                OnPropertyChanged(nameof(WeatherData));
+            }
+        }
+    }
+
+    private string _placeName;
+    public string PlaceName
+    {
+        get => _placeName;
+        set
+        {
+            if (_placeName != value)
+            {
+                _placeName = value;
+                OnPropertyChanged(nameof(PlaceName));
+            }
+        }
+    }
+
+    private DateTime _date = DateTime.Now;
+    public DateTime Date
+    {
+        get => _date;
+        set
+        {
+            if (_date != value)
+            {
+                _date = value;
+                OnPropertyChanged(nameof(Date));
+            }
+        }
+    }
 
     public WeatherView()
     {
         InitializeComponent();
-
         MyEntry.Completed += OnEntryCompleted;
     }
 
@@ -24,13 +66,21 @@ public partial class WeatherView : ContentPage
 
         if (!string.IsNullOrWhiteSpace(searchText))
         {
-            var location = await GetCoordinatesAsync(searchText);
+            PlaceName = searchText;
 
-            WeatherData = await new Rest.GetWeather().GetWeatherAsync(location.Latitude, location.Longitude);
+            var location = await GetCoordinatesAsync(searchText);
 
             if (location != null)
             {
-                Console.WriteLine($"Znaleziono lokalizacjê: {location.Latitude}, {location.Longitude}");
+                WeatherData = await new Rest.GetWeather().GetWeatherAsync(location.Latitude, location.Longitude);
+                if (WeatherData != null)
+                {
+
+                }
+                else
+                {
+                    Console.WriteLine("Nie uda³o siê pobraæ danych pogodowych.");
+                }
                 // Mo¿esz np. ustawiæ tekst gdzieœ w UI, dodaæ mapê itp.
             }
             else
@@ -63,4 +113,8 @@ public partial class WeatherView : ContentPage
 
         return locations?.FirstOrDefault();
     }
+
+
+    protected virtual void OnPropertyChanged(string propertyName)
+        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
