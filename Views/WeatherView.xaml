@@ -43,26 +43,26 @@
             <!-- Animacja pogody -->
             <skia:SKLottieView
                 RepeatCount="-1"
-                HeightRequest="300"
+                HeightRequest="{OnPlatform WinUI=450, Android=300}"
                 Source="partly-cloudy.json"/>
 
             <!-- Pogoda (parametry) -->
             <Grid
                 HeightRequest="100"
-                ColumnDefinitions="*, *, *"
+                ColumnDefinitions="*, *, *, *, *"
                 Padding="0, 20, 0, 0">
 
-                <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="10" Grid.Column="1">
                     <Label Style="{StaticResource WeatherTitle}" Text="Temperatura"/>
                     <Label Style="{StaticResource WeatherValue}" Text="16°C"/>
                 </VerticalStackLayout>
 
-                <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="10">
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="10" Grid.Column="2">
                     <Label Style="{StaticResource WeatherTitle}" Text="Wiatr"/>
                     <Label Style="{StaticResource WeatherValue}" Text="10 km/h"/>
                 </VerticalStackLayout>
 
-                <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center" Spacing="10">
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="10" Grid.Column="3">
                     <Label Style="{StaticResource WeatherTitle}" Text="Pogoda"/>
                     <Label Style="{StaticResource WeatherValue}" Text="Deszczowo"/>
                 </VerticalStackLayout>
@@ -95,9 +95,9 @@
                                     Source="snow.json"/>
                                 
                                 <BoxView HeightRequest="20" BackgroundColor="Transparent"/>
-                                <Label TextColor="{StaticResource Yellow100Accent}" Text="08-02-2050"/>
-                                <Label TextColor="{StaticResource Yellow100Accent}" Text="20°C"/>
-                                <Label TextColor="{StaticResource Yellow100Accent}" Text="Słonecznie"/>
+                                <Label TextColor="{StaticResource White}" Text="08-02-2050"/>
+                                <Label TextColor="{StaticResource White}" Text="20°C"/>
+                                <Label TextColor="{StaticResource White}" Text="Słonecznie"/>
                             </VerticalStackLayout>
                         </Frame>
                     </DataTemplate>

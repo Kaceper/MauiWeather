@@ -40,8 +40,8 @@
         <Setter Property="BackgroundColor" Value="{StaticResource CardBlue}"/>
         <Setter Property="BorderColor" Value="Transparent"/>
         <Setter Property="CornerRadius" Value="15"/>
-        <Setter Property="HeightRequest" Value="180"/>
-        <Setter Property="WidthRequest" Value="150"/>
-        <Setter Property="Opacity" Value="90"/>
+        <Setter Property="HeightRequest" Value="{OnPlatform WinUI=250, Android=180}"/>
+        <Setter Property="WidthRequest" Value="{OnPlatform WinUI=200, Android=150}"/>
+        <Setter Property="Opacity" Value="0.9"/>
     </Style>
 </ResourceDictionary>
