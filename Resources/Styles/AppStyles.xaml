@@ -20,15 +20,18 @@
     <!-- x.Key nie powoduje ustawienia stylu od razu dla wszystkich Label w aplikacji-->
     <Style x:Key="Title" TargetType="Label">
         <Setter Property="FontAttributes" Value="Bold"/>
-        <Setter Property="FontSize" Value="Large"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Padding" Value="0, 0, 0, 5"/>
     </Style>
 
     <Style x:Key="WeatherTitle" TargetType="Label">
         <Setter Property="FontFamily" Value="LatoLight"/>
+        <Setter Property="FontSize" Value="15"/>
     </Style>
 
     <Style x:Key="WeatherValue" TargetType="Label">
         <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="FontSize" Value="15"/>
     </Style>
 
     <Style x:Key="Card" TargetType="Frame">

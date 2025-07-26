@@ -18,7 +18,6 @@ namespace MauiWeather
                     fonts.AddFont("Lato-Light.ttf", "LatoLight");
                     fonts.AddFont("Lato-Regular.ttf", "LatoRegular");
                 });
-
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif

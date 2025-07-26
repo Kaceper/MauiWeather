@@ -53,7 +53,7 @@
                 Padding="0, 20, 0, 0">
 
                 <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
-                    <Label Style="{StaticResource WeatherTitle}" Text="Temp."/>
+                    <Label Style="{StaticResource WeatherTitle}" Text="Temperatura"/>
                     <Label Style="{StaticResource WeatherValue}" Text="16°C"/>
                 </VerticalStackLayout>
 
