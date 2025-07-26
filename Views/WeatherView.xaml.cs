@@ -1,10 +1,16 @@
+using MauiWeather.Data;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Devices.Sensors;
+using Newtonsoft.Json;
+using System;
+using System.Net.Http;
 
 namespace MauiWeather.MVVM.Views;
 
 public partial class WeatherView : ContentPage
 {
+    public WeatherData WeatherData { get; set; }
+
     public WeatherView()
     {
         InitializeComponent();
@@ -19,6 +25,8 @@ public partial class WeatherView : ContentPage
         if (!string.IsNullOrWhiteSpace(searchText))
         {
             var location = await GetCoordinatesAsync(searchText);
+
+            WeatherData = await new Rest.GetWeather().GetWeatherAsync(location.Latitude, location.Longitude);
 
             if (location != null)
             {

@@ -10,7 +10,6 @@ public class AzureMapsGeocoder
     {
         var url = $"https://atlas.microsoft.com/search/address/json?api-version=1.0&subscription-key={apiKey}&query={Uri.EscapeDataString(address)}";
 
-        var jsonString = await httpClient.GetStringAsync(url);
         var response = await httpClient.GetFromJsonAsync<AzureMapsResponse>(url);
 
         if (response?.Results == null)
