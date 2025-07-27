@@ -3,8 +3,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
     x:Class="MauiWeather.Views.WeatherView"
+    xmlns:converters="clr-namespace:MauiWeather.Converters"
     x:Name="RootView"
     Title="WeatherView">
+
+    <ContentPage.Resources>
+        <converters:CodeToWeatherConverter x:Key="CodeToWeatherConverter"/>
+        <converters:CodeToLottieConverter x:Key="CodeToLottieConverter"/>
+    </ContentPage.Resources>
 
     <ScrollView>
         <VerticalStackLayout Padding="15" Spacing="20">
@@ -45,7 +51,7 @@
             <skia:SKLottieView
                 RepeatCount="-1"
                 HeightRequest="{OnPlatform WinUI=450, Android=300}"
-                Source="partly-cloudy.json"/>
+                Source="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.current.weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
 
             <!-- Pogoda (parametry) -->
             <Grid
@@ -65,7 +71,7 @@
 
                 <VerticalStackLayout HorizontalOptions="Center" Spacing="10" Grid.Column="3">
                     <Label Style="{StaticResource WeatherTitle}" Text="Pogoda"/>
-                    <Label Style="{StaticResource WeatherValue}" Text="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.current.weather_code}"/>
+                    <Label Style="{StaticResource WeatherValue}" Text="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.current.weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
                 </VerticalStackLayout>
             </Grid>
 
