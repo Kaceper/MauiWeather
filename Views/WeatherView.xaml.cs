@@ -57,7 +57,12 @@ public partial class WeatherView : ContentPage, INotifyPropertyChanged
     public WeatherView()
     {
         InitializeComponent();
+
         MyEntry.Completed += OnEntryCompleted;
+
+        MyEntry.Text = "Inowroc³aw";
+        OnEntryCompleted(null, null);
+        MyEntry.Unfocus();
     }
 
     private async void OnEntryCompleted(object? sender, EventArgs e)
@@ -73,6 +78,20 @@ public partial class WeatherView : ContentPage, INotifyPropertyChanged
             if (location != null)
             {
                 WeatherData = await new Rest.GetWeather().GetWeatherAsync(location.Latitude, location.Longitude);
+
+                for (int i = 0; i < WeatherData.daily.time.Length; i++)
+                {
+                    WeatherData.daily2.Add(new Daily2
+                    {
+                        time = WeatherData.daily.time[i],
+                        weather_code = WeatherData.daily.weather_code[i],
+                        temperature_2m_max = WeatherData.daily.temperature_2m_max[i],
+                        temperature_2m_min = WeatherData.daily.temperature_2m_min[i],
+                        rain_sum = WeatherData.daily.rain_sum[i],
+                        wind_speed_10m_max = WeatherData.daily.wind_speed_10m_max[i]
+                    });
+                }
+
                 if (WeatherData != null)
                 {
 

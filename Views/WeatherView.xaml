@@ -10,6 +10,7 @@
     <ContentPage.Resources>
         <converters:CodeToWeatherConverter x:Key="CodeToWeatherConverter"/>
         <converters:CodeToLottieConverter x:Key="CodeToLottieConverter"/>
+        <converters:UnixTimestampToDateConverter x:Key="UnixTimestampToDateConverter"/>
     </ContentPage.Resources>
 
     <ScrollView>
@@ -76,21 +77,10 @@
             </Grid>
 
             <!-- Prognoza (CollectionView) -->
-            <CollectionView>
-                <CollectionView.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>1</x:String>
-                        <x:String>2</x:String>
-                        <x:String>3</x:String>
-                        <x:String>4</x:String>
-                        <x:String>5</x:String>
-                    </x:Array>
-                </CollectionView.ItemsSource>
-
+            <CollectionView ItemsSource="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.daily2}" HorizontalOptions="Center">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal"/>
                 </CollectionView.ItemsLayout>
-
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame Style="{StaticResource Card}">
@@ -99,12 +89,12 @@
                                     IsAnimationEnabled="False"
                                     HeightRequest="70"
                                     WidthRequest="70"
-                                    Source="snow.json"/>
+                                    Source="{Binding weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
                                 
                                 <BoxView HeightRequest="20" BackgroundColor="Transparent"/>
-                                <Label TextColor="{StaticResource White}" Text="08-02-2050"/>
-                                <Label TextColor="{StaticResource White}" Text="20°C"/>
-                                <Label TextColor="{StaticResource White}" Text="Słonecznie"/>
+                                <Label Padding="0, 0, 0, 5" TextColor="{StaticResource PastelYellow}" FontAttributes="Bold" Text="{Binding time, Converter={StaticResource UnixTimestampToDateConverter}}"/>
+                                <Label TextColor="{StaticResource White}" Text="{Binding temperature_2m_max, StringFormat='{0}°C'}"/>
+                                <Label TextColor="{StaticResource White}" Text="{Binding weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
                             </VerticalStackLayout>
                         </Frame>
                     </DataTemplate>
