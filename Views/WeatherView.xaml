@@ -11,6 +11,7 @@
         <converters:CodeToWeatherConverter x:Key="CodeToWeatherConverter"/>
         <converters:CodeToLottieConverter x:Key="CodeToLottieConverter"/>
         <converters:UnixTimestampToDateConverter x:Key="UnixTimestampToDateConverter"/>
+        <converters:UnixTimestampToHoursConverter x:Key="UnixTimestampToHoursConverter"/>
     </ContentPage.Resources>
 
     <ScrollView>
@@ -76,7 +77,43 @@
                 </VerticalStackLayout>
             </Grid>
 
-            <!-- Prognoza (CollectionView) -->
+            <!-- Prognoza na kolejne godziny (CollectionView) -->
+            <CollectionView ItemsSource="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.hourly2}" HorizontalOptions="Center">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Style="{StaticResource Card}">
+                            <VerticalStackLayout VerticalOptions="Center">
+                                <skia:SKLottieView
+                                    IsAnimationEnabled="False"
+                                    HeightRequest="70"
+                                    WidthRequest="70"
+                                    Source="{Binding weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
+
+                                <BoxView HeightRequest="20" BackgroundColor="Transparent"/>
+                                <Label Padding="0, 0, 0, 5" TextColor="{StaticResource PastelYellow}" FontAttributes="Bold">
+                                    <Label.Style>
+                                        <Style TargetType="Label">
+                                            <Setter Property="Text" Value="{Binding time, Converter={StaticResource UnixTimestampToHoursConverter}}" />
+                                            <Style.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding isFirst}" Value="True">
+                                                    <Setter Property="Text" Value="Teraz" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Label.Style>
+                                </Label>
+                                <Label TextColor="{StaticResource White}" Text="{Binding temperature_2m, StringFormat='{0}°C'}"/>
+                                <Label TextColor="{StaticResource White}" Text="{Binding weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Prognoza na kolejne dni (CollectionView) -->
             <CollectionView ItemsSource="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.daily2}" HorizontalOptions="Center">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal"/>
@@ -92,7 +129,18 @@
                                     Source="{Binding weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
                                 
                                 <BoxView HeightRequest="20" BackgroundColor="Transparent"/>
-                                <Label Padding="0, 0, 0, 5" TextColor="{StaticResource PastelYellow}" FontAttributes="Bold" Text="{Binding time, Converter={StaticResource UnixTimestampToDateConverter}}"/>
+                                <Label Padding="0, 0, 0, 5" TextColor="{StaticResource PastelYellow}" FontAttributes="Bold">
+                                    <Label.Style>
+                                        <Style TargetType="Label">
+                                            <Setter Property="Text" Value="{Binding time, Converter={StaticResource UnixTimestampToDateConverter}}" />
+                                            <Style.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding isFirst}" Value="True">
+                                                    <Setter Property="Text" Value="Dzisiaj" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Label.Style>
+                                </Label>
                                 <Label TextColor="{StaticResource White}" Text="{Binding temperature_2m_max, StringFormat='{0}°C'}"/>
                                 <Label TextColor="{StaticResource White}" Text="{Binding weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
                             </VerticalStackLayout>

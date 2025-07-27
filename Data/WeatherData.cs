@@ -21,6 +21,8 @@ namespace MauiWeather.Data
         public Daily_Units daily_units { get; set; }
         public Daily daily { get; set; }
         public ObservableCollection<Daily2> daily2 { get; set; } = new ObservableCollection<Daily2>();
+        public Hourly hourly { get; set; }
+        public ObservableCollection<Hourly2> hourly2 { get; set; } = new ObservableCollection<Hourly2>();
     }
 
     public class Current_Units
@@ -70,11 +72,31 @@ namespace MauiWeather.Data
 
     public class Daily2
     {
+        public bool isFirst { get; set; }
         public int time { get; set; }
         public int weather_code { get; set; }
         public float temperature_2m_max { get; set; }
         public float temperature_2m_min { get; set; }
         public float rain_sum { get; set; }
         public float wind_speed_10m_max { get; set; }
+    }
+
+    public class Hourly
+    {
+        public int[] time { get; set; }
+        public int[] weather_code { get; set; }
+        public float[] temperature_2m { get; set; }
+        public float[] rain { get; set; }
+        public float[] wind_speed_10m { get; set; }
+    }
+
+    public class Hourly2
+    {
+        public bool isFirst { get; set; }
+        public int time { get; set; }
+        public int weather_code { get; set; }
+        public float temperature_2m { get; set; }
+        public float rain { get; set; }
+        public float wind_speed_10m { get; set; }
     }
 }

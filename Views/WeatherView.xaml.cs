@@ -79,10 +79,12 @@ public partial class WeatherView : ContentPage, INotifyPropertyChanged
             {
                 WeatherData = await new Rest.GetWeather().GetWeatherAsync(location.Latitude, location.Longitude);
 
+                bool isFirst = true;
                 for (int i = 0; i < WeatherData.daily.time.Length; i++)
                 {
                     WeatherData.daily2.Add(new Daily2
                     {
+                        isFirst = isFirst,
                         time = WeatherData.daily.time[i],
                         weather_code = WeatherData.daily.weather_code[i],
                         temperature_2m_max = WeatherData.daily.temperature_2m_max[i],
@@ -90,17 +92,41 @@ public partial class WeatherView : ContentPage, INotifyPropertyChanged
                         rain_sum = WeatherData.daily.rain_sum[i],
                         wind_speed_10m_max = WeatherData.daily.wind_speed_10m_max[i]
                     });
+
+                    if (isFirst)
+                    {
+                        isFirst = false;
+                    }
                 }
 
-                if (WeatherData != null)
+                isFirst = true;
+                for (int i = 0; i < WeatherData.hourly.time.Length; i++)
                 {
+                    if (WeatherData.hourly.time[i] <= DateTimeOffset.UtcNow.ToUnixTimeSeconds())
+                    {
+                        continue;
+                    }
 
+                    WeatherData.hourly2.Add(new Hourly2
+                    {
+                        isFirst = isFirst,
+                        time = WeatherData.hourly.time[i],
+                        weather_code = WeatherData.hourly.weather_code[i],
+                        temperature_2m = WeatherData.hourly.temperature_2m[i],
+                        rain = WeatherData.hourly.rain[i],
+                        wind_speed_10m = WeatherData.hourly.wind_speed_10m[i]
+                    });
+
+                    if (isFirst)
+                    {
+                        isFirst = false;
+                    }
+
+                    if (WeatherData.hourly2.Count == 7)
+                    {
+                        return;
+                    }
                 }
-                else
-                {
-                    Console.WriteLine("Nie uda³o siê pobraæ danych pogodowych.");
-                }
-                // Mo¿esz np. ustawiæ tekst gdzieœ w UI, dodaæ mapê itp.
             }
             else
             {

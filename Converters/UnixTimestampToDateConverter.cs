@@ -11,25 +11,30 @@ namespace MauiWeather.Converters
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (value is int)
+            DateTime dateTime;
+
+            if (value is int intVal)
             {
-                var dateTime = DateTimeOffset.FromUnixTimeSeconds((int)value).DateTime;
-                return dateTime.ToString("dd/MM/yyyy");
+                dateTime = DateTimeOffset.FromUnixTimeSeconds(intVal).DateTime;
+            }
+            else if (value is long longVal)
+            {
+                dateTime = DateTimeOffset.FromUnixTimeSeconds(longVal).DateTime;
+            }
+            else if (value is double doubleVal)
+            {
+                dateTime = DateTimeOffset.FromUnixTimeSeconds((long)doubleVal).DateTime;
+            }
+            else
+            {
+                return "";
             }
 
-            if (value is long)
-            {
-                var dateTime = DateTimeOffset.FromUnixTimeSeconds((long)value).DateTime;
-                return dateTime.ToString("dd/MM/yyyy");
-            }
+            // Pobieram nazwę dnia tygodnia po polsku
+            string day = dateTime.ToString("dddd", new CultureInfo("pl-PL"));
 
-            if (value is double)
-            {
-                var dateTime = DateTimeOffset.FromUnixTimeSeconds((long)value).DateTime;
-                return dateTime.ToString("dd/MM/yyyy");
-            }
-
-            return "";
+            // Zwracam z wielką literą na początku
+            return char.ToUpper(day[0]) + day.Substring(1);
         }
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
