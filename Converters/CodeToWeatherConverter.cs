@@ -20,7 +20,7 @@ namespace MauiWeather.Converters
                 case 1:
                 case 2:
                 case 3:
-                    return "Częściowe zachmurzenie";
+                    return "Zachmurzenie";
                 case 45:
                 case 48:
                     return "Mgła";

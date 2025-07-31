@@ -1,9 +1,11 @@
 using MauiWeather.Data;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Devices.Sensors;
+using Microsoft.Maui.Platform;
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Net.Http;
 
 namespace MauiWeather.Views;
@@ -58,9 +60,12 @@ public partial class WeatherView : ContentPage, INotifyPropertyChanged
     {
         InitializeComponent();
 
-        MyEntry.Completed += OnEntryCompleted;
+        BindingContext = this;
 
         MyEntry.Text = "Inowroc³aw";
+
+        MyEntry.Completed += OnEntryCompleted;
+
         OnEntryCompleted(null, null);
         MyEntry.Unfocus();
     }
@@ -124,9 +129,11 @@ public partial class WeatherView : ContentPage, INotifyPropertyChanged
 
                     if (WeatherData.hourly2.Count == 7)
                     {
-                        return;
+                        break;
                     }
                 }
+
+                ReloadMap();
             }
             else
             {
@@ -159,6 +166,37 @@ public partial class WeatherView : ContentPage, INotifyPropertyChanged
         return locations?.FirstOrDefault();
     }
 
+    private void ReloadMap()
+    {
+        HtmlWebViewSource htmlSource = new HtmlWebViewSource();
+
+        Task.Run(async () =>
+        {
+            string html;
+
+            using (var stream = await FileSystem.OpenAppPackageFileAsync("azuremap.html"))
+            using (var reader = new StreamReader(stream))
+            {
+                html = await reader.ReadToEndAsync();
+            }
+
+            double lat = WeatherData.latitude;
+            double lon = WeatherData.longitude;
+            int zoom = 12;
+
+            html = html.Replace("LAT_PLACEHOLDER", lat.ToString(CultureInfo.InvariantCulture))
+                        .Replace("LON_PLACEHOLDER", lon.ToString(CultureInfo.InvariantCulture))
+                        .Replace("ZOOM_PLACEHOLDER", zoom.ToString());
+
+
+            htmlSource = new HtmlWebViewSource
+            {
+                Html = html
+            };
+        }).Wait();
+
+        WeatherHeader.MapWebView.Source = htmlSource;
+    }
 
     protected virtual void OnPropertyChanged(string propertyName)
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>RainViewer + Leaflet Animation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    html, body, #map {
+      height: 100%;
+      margin: 0;
+    }
+    #controls {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      background: rgba(255,255,255,0.8);
+      padding: 6px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <button onclick="toggleAnimation()">Start / Stop</button>
+  </div>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const lat = LAT_PLACEHOLDER;
+    const lon = LON_PLACEHOLDER;
+    const zoom = ZOOM_PLACEHOLDER;
+
+    const map = L.map('map').setView([lat, lon], zoom);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    let radarFrames = [];
+    let radarLayers = {};
+    let currentFrame = 0;
+    let animationInterval = null;
+
+    function showRadarFrame(index) {
+      const frame = radarFrames[index];
+      if (!frame) return;
+
+      Object.values(radarLayers).forEach(layer => map.removeLayer(layer));
+
+      if (!radarLayers[frame.path]) {
+        const url = `${apiData.host}${frame.path}/256/{z}/{x}/{y}/2/1_1.png`;
+        radarLayers[frame.path] = L.tileLayer(url, { opacity: 0.6, tileSize: 256 });
+      }
+
+      radarLayers[frame.path].addTo(map);
+    }
+
+    function startAnimation() {
+      animationInterval = setInterval(() => {
+        currentFrame = (currentFrame + 1) % radarFrames.length;
+        showRadarFrame(currentFrame);
+      }, 500);
+    }
+
+    function stopAnimation() {
+      clearInterval(animationInterval);
+      animationInterval = null;
+    }
+
+    function toggleAnimation() {
+      if (animationInterval) {
+        stopAnimation();
+      } else {
+        startAnimation();
+      }
+    }
+
+    let apiData = null;
+
+    fetch('https://api.rainviewer.com/public/weather-maps.json')
+      .then(res => res.json())
+      .then(data => {
+        apiData = data;
+        radarFrames = data.radar.past.concat(data.radar.nowcast || []);
+        currentFrame = radarFrames.length - 1;
+        showRadarFrame(currentFrame);
+      })
+      .catch(err => console.error('RainViewer API error:', err));
+  </script>
+</body>
+</html>

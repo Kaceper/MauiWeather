@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:MauiWeather.Converters"
+    xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI">
+
+    <ContentPage.Resources>
+        <converters:CodeToWeatherConverter x:Key="CodeToWeatherConverter"/>
+        <converters:CodeToLottieConverter x:Key="CodeToLottieConverter"/>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout>
+        <!-- Miasto i data -->
+        <VerticalStackLayout>
+            <Label Style="{StaticResource Title}" Text="{Binding PlaceName}"/>
+            <Label Text="{Binding Date, StringFormat='{0:dddd, dd MMMM yyyy}'}"/>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout>
+            <Grid
+                ColumnDefinitions=".6*, .4*"
+                HorizontalOptions="Fill">
+
+                <!-- Animacja pogody -->
+                <skia:SKLottieView
+                    Grid.Column="0"
+                    RepeatCount="-1"
+                    HeightRequest="{OnPlatform WinUI=450, Android=300}"
+                    Source="{Binding WeatherData.current.weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
+
+                <!-- Pogoda (parametry) -->
+                <Grid
+                    Grid.Column="1"
+                    HorizontalOptions="Fill"
+                    RowDefinitions="*, *, *"
+                    Margin="0, 50, 50, 0">
+
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Row="0" >
+                        <Label Style="{StaticResource WeatherTitle}" Text="Temperatura"/>
+                        <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.temperature_2m, StringFormat='{0}°C'}"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Row="1">
+                        <Label Style="{StaticResource WeatherTitle}" Text="Wiatr"/>
+                        <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.wind_speed_10m, StringFormat='{0}km/h'}"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Row="2">
+                        <Label Style="{StaticResource WeatherTitle}" Text="Pogoda"/>
+                        <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </Grid>
+
+            <Border
+                StrokeThickness="0"
+                BackgroundColor="White"
+                Padding="0"
+                StrokeShape="RoundRectangle 20">
+
+                <WebView
+                    x:Name="MapWebViewAndroid"
+                    HeightRequest="250"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    Source="azuremap.html"/>
+            </Border>
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</ContentView>

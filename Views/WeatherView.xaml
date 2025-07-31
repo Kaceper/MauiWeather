@@ -5,7 +5,7 @@
     x:Class="MauiWeather.Views.WeatherView"
     xmlns:converters="clr-namespace:MauiWeather.Converters"
     x:Name="RootView"
-    Title="WeatherView">
+    xmlns:views="clr-namespace:MauiWeather.Views">
 
     <ContentPage.Resources>
         <converters:CodeToWeatherConverter x:Key="CodeToWeatherConverter"/>
@@ -43,39 +43,7 @@
                 </Entry>
             </Grid>
 
-            <!-- Miasto i data -->
-            <VerticalStackLayout>
-                <Label Style="{StaticResource Title}" Text="{Binding Source={x:Reference Name=RootView}, Path=PlaceName}"/>
-                <Label Text="{Binding Source={x:Reference Name=RootView}, Path=Date, StringFormat='{0:dddd, dd MMMM yyyy}'}"/>
-            </VerticalStackLayout>
-
-            <!-- Animacja pogody -->
-            <skia:SKLottieView
-                RepeatCount="-1"
-                HeightRequest="{OnPlatform WinUI=450, Android=300}"
-                Source="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.current.weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
-
-            <!-- Pogoda (parametry) -->
-            <Grid
-                HeightRequest="100"
-                ColumnDefinitions="*, *, *, *, *"
-                Padding="0, 20, 0, 0">
-
-                <VerticalStackLayout HorizontalOptions="Center" Spacing="10" Grid.Column="1">
-                    <Label Style="{StaticResource WeatherTitle}" Text="Temperatura"/>
-                    <Label Style="{StaticResource WeatherValue}" Text="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.current.temperature_2m, StringFormat='{0}°C'}"/>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout HorizontalOptions="Center" Spacing="10" Grid.Column="2">
-                    <Label Style="{StaticResource WeatherTitle}" Text="Wiatr"/>
-                    <Label Style="{StaticResource WeatherValue}" Text="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.current.wind_speed_10m, StringFormat='{0}km/h'}"/>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout HorizontalOptions="Center" Spacing="10" Grid.Column="3">
-                    <Label Style="{StaticResource WeatherTitle}" Text="Pogoda"/>
-                    <Label Style="{StaticResource WeatherValue}" Text="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.current.weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
-                </VerticalStackLayout>
-            </Grid>
+            <views:WeatherHeader x:Name="WeatherHeader" BindingContext="{Binding}" />
 
             <!-- Prognoza na kolejne godziny (CollectionView) -->
             <CollectionView ItemsSource="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.hourly2}" HorizontalOptions="Center">
@@ -87,9 +55,9 @@
                         <Frame Style="{StaticResource Card}">
                             <VerticalStackLayout VerticalOptions="Center">
                                 <skia:SKLottieView
-                                    IsAnimationEnabled="False"
-                                    HeightRequest="70"
-                                    WidthRequest="70"
+                                    RepeatCount="-1"
+                                    HeightRequest="100"
+                                    WidthRequest="100"
                                     Source="{Binding weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
 
                                 <BoxView HeightRequest="20" BackgroundColor="Transparent"/>
@@ -105,8 +73,8 @@
                                         </Style>
                                     </Label.Style>
                                 </Label>
-                                <Label TextColor="{StaticResource White}" Text="{Binding temperature_2m, StringFormat='{0}°C'}"/>
-                                <Label TextColor="{StaticResource White}" Text="{Binding weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
+                                <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="{Binding temperature_2m, StringFormat='{0}°C'}"/>
+                                <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="{Binding weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
                             </VerticalStackLayout>
                         </Frame>
                     </DataTemplate>
@@ -123,11 +91,11 @@
                         <Frame Style="{StaticResource Card}">
                             <VerticalStackLayout VerticalOptions="Center">
                                 <skia:SKLottieView
-                                    IsAnimationEnabled="False"
-                                    HeightRequest="70"
-                                    WidthRequest="70"
+                                    RepeatCount="-1"
+                                    HeightRequest="100"
+                                    WidthRequest="100"
                                     Source="{Binding weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
-                                
+
                                 <BoxView HeightRequest="20" BackgroundColor="Transparent"/>
                                 <Label Padding="0, 0, 0, 5" TextColor="{StaticResource PastelYellow}" FontAttributes="Bold">
                                     <Label.Style>
@@ -141,8 +109,8 @@
                                         </Style>
                                     </Label.Style>
                                 </Label>
-                                <Label TextColor="{StaticResource White}" Text="{Binding temperature_2m_max, StringFormat='{0}°C'}"/>
-                                <Label TextColor="{StaticResource White}" Text="{Binding weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
+                                <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="{Binding temperature_2m_max, StringFormat='{0}°C'}"/>
+                                <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="{Binding weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
                             </VerticalStackLayout>
                         </Frame>
                     </DataTemplate>
