@@ -46,6 +46,56 @@
             <views:WeatherHeader x:Name="WeatherHeader" BindingContext="{Binding}" />
 
             <!-- Prognoza na kolejne godziny (CollectionView) -->
+            <CollectionView ItemsSource="{Binding Source={x:Reference Name=RootView}, Path=WarningsMeteo}" HorizontalOptions="Center">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <VerticalStackLayout 
+                            HorizontalOptions="FillAndExpand">
+                            <Frame  
+                                BackgroundColor="#3A2D2B"
+                                CornerRadius="16"
+                                Padding="30, 20, 40, 30"
+                                VerticalOptions="Center"
+                                HorizontalOptions="Fill"
+                                BorderColor="Transparent"
+                                HasShadow="False"
+                                WidthRequest="{Binding Source={x:Reference RootView}, Path=BindingContext.FrameWidth}">
+                                <VerticalStackLayout VerticalOptions="Center">
+                                    <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                                        <Image 
+                                            Grid.Column="0"
+                                            Margin="10"
+                                            Source="alert.png"
+                                            WidthRequest="20"
+                                            HeightRequest="20"
+                                            VerticalOptions="Center"/>
+                                        <Label TextColor="#BC6C63" Text="Ostrzeżenie meteorologiczne" HorizontalTextAlignment="Center" FontSize="Medium"/>
+                                    </HorizontalStackLayout>
+
+                                    <Label Text="{Binding tresc}" HorizontalTextAlignment="Center" />
+
+                                    <Label
+                                        Margin="0, 20, 0, 0"
+                                        Text="Instytut Meteorologii i Gospodarki Wodnej"
+                                        TextDecorations="Underline"
+                                        Padding="4"
+                                        InputTransparent="False">
+                                    
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Prognoza na kolejne godziny (CollectionView) -->
             <CollectionView ItemsSource="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.hourly2}" HorizontalOptions="Center">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal"/>

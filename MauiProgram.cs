@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using System.Text;
 
 namespace MauiWeather
 {
@@ -21,6 +22,8 @@ namespace MauiWeather
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             return builder.Build();
         }
