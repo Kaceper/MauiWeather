@@ -1,3 +1,6 @@
+#if ANDROID
+using AndroidX.Core.View;
+#endif
 using MauiWeather.Data;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Devices.Sensors;
@@ -88,6 +91,19 @@ public partial class WeatherView : ContentPage, INotifyPropertyChanged
     public WeatherView()
     {
         InitializeComponent();
+
+#if ANDROID
+        Loaded += (s, e) =>
+        {
+            var activity = Platform.CurrentActivity;
+            var decorView = activity?.Window?.DecorView;
+
+            if (decorView != null)
+            {
+                ViewCompat.SetOnApplyWindowInsetsListener(decorView, new InsetsListener(RootView));
+            }
+        };
+#endif
 
         BindingContext = this;
 
@@ -329,6 +345,37 @@ public partial class WeatherView : ContentPage, INotifyPropertyChanged
 
         WeatherHeader.MapWebView.Source = htmlSource;
     }
+
+#if ANDROID
+    private class InsetsListener : Java.Lang.Object, IOnApplyWindowInsetsListener
+    {
+        private readonly ContentPage _layout;
+
+        public InsetsListener(ContentPage layout)
+        {
+            _layout = layout;
+        }
+
+        public WindowInsetsCompat OnApplyWindowInsets(Android.Views.View v, WindowInsetsCompat insets)
+        {
+            var context = Platform.CurrentActivity;
+            var density = context?.Resources?.DisplayMetrics?.Density ?? 1f;
+
+            var statusBarHeight = insets.GetInsets(WindowInsetsCompat.Type.StatusBars()).Top;
+            var navBarHeight = insets.GetInsets(WindowInsetsCompat.Type.NavigationBars()).Bottom;
+
+            var statusBarDp = statusBarHeight / density;
+            var navBarDp = navBarHeight / density;
+
+            Microsoft.Maui.Controls.Application.Current?.Dispatcher.Dispatch(() =>
+            {
+                _layout.Padding = new Thickness(0, statusBarDp, 0, navBarDp);
+            });
+
+            return insets;
+        }
+    }
+#endif
 
     protected virtual void OnPropertyChanged(string propertyName)
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
