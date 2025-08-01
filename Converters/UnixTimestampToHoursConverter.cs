@@ -13,19 +13,19 @@ namespace MauiWeather.Converters
         {
             if (value is int)
             {
-                var dateTime = DateTimeOffset.FromUnixTimeSeconds((int)value).DateTime;
+                var dateTime = DateTimeOffset.FromUnixTimeSeconds((int)value).ToLocalTime().DateTime;
                 return dateTime.ToString("HH:00");
             }
 
             if (value is long)
             {
-                var dateTime = DateTimeOffset.FromUnixTimeSeconds((long)value).DateTime;
+                var dateTime = DateTimeOffset.FromUnixTimeSeconds((long)value).ToLocalTime().DateTime;
                 return dateTime.ToString("HH:00");
             }
 
             if (value is double)
             {
-                var dateTime = DateTimeOffset.FromUnixTimeSeconds((long)value).DateTime;
+                var dateTime = DateTimeOffset.FromUnixTimeSeconds((long)value).ToLocalTime().DateTime;
                 return dateTime.ToString("HH:00");
             }
 

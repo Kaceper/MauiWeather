@@ -16,7 +16,7 @@
         <!-- Miasto i data -->
         <VerticalStackLayout>
             <Label Style="{StaticResource Title}" Text="{Binding PlaceName}"/>
-            <Label Text="{Binding Date, StringFormat='{0:dddd, dd MMMM yyyy}'}"/>
+            <Label Text="{Binding Date, StringFormat='{0:dddd, d MMMM yyyy}'}"/>
         </VerticalStackLayout>
 
         <!-- Animacja + mapa -->

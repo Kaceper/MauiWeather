@@ -95,77 +95,101 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <!-- Prognoza na kolejne godziny (CollectionView) -->
-            <CollectionView ItemsSource="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.hourly2}" HorizontalOptions="Center">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Style="{StaticResource Card}">
-                            <VerticalStackLayout VerticalOptions="Center">
-                                <skia:SKLottieView
-                                    RepeatCount="-1"
-                                    HeightRequest="100"
-                                    WidthRequest="100"
-                                    Source="{Binding weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
+            <VerticalStackLayout BackgroundColor="{StaticResource CardBlue}" Padding="10">
+                <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Start" Padding="0, 0, 0, 10">
+                    <Image 
+                        Grid.Column="0"
+                        Margin="10"
+                        Source="calendar.png"
+                        WidthRequest="20"
+                        HeightRequest="20"
+                        VerticalOptions="Center"/>
+                    <Label HorizontalOptions="Start" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="Prognoza godzinowa"/>
+                </HorizontalStackLayout>
+                <!-- Prognoza na kolejne godziny (CollectionView) -->
+                <CollectionView ItemsSource="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.hourly2}" HorizontalOptions="Center">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Style="{StaticResource Card}">
+                                <VerticalStackLayout VerticalOptions="Center">
+                                    <skia:SKLottieView
+                                        RepeatCount="-1"
+                                        HeightRequest="100"
+                                        WidthRequest="100"
+                                        Source="{Binding weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
 
-                                <BoxView HeightRequest="20" BackgroundColor="Transparent"/>
-                                <Label Padding="0, 0, 0, 5" TextColor="{StaticResource PastelYellow}" FontAttributes="Bold">
-                                    <Label.Style>
-                                        <Style TargetType="Label">
-                                            <Setter Property="Text" Value="{Binding time, Converter={StaticResource UnixTimestampToHoursConverter}}" />
-                                            <Style.Triggers>
-                                                <DataTrigger TargetType="Label" Binding="{Binding isFirst}" Value="True">
-                                                    <Setter Property="Text" Value="Teraz" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Label.Style>
-                                </Label>
-                                <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="{Binding temperature_2m, StringFormat='{0}°C'}"/>
-                                <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="{Binding weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
-                            </VerticalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                    <BoxView HeightRequest="20" BackgroundColor="Transparent"/>
+                                    <Label Padding="0, 0, 0, 5" TextColor="{StaticResource PastelYellow}" FontAttributes="Bold">
+                                        <Label.Style>
+                                            <Style TargetType="Label">
+                                                <Setter Property="Text" Value="{Binding time, Converter={StaticResource UnixTimestampToHoursConverter}}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding isFirst}" Value="True">
+                                                        <Setter Property="Text" Value="Teraz" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Label.Style>
+                                    </Label>
+                                    <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="{Binding temperature_2m, StringFormat='{0}°C'}"/>
+                                    <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="{Binding weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
 
-            <!-- Prognoza na kolejne dni (CollectionView) -->
-            <CollectionView ItemsSource="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.daily2}" HorizontalOptions="Center">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Style="{StaticResource Card}">
-                            <VerticalStackLayout VerticalOptions="Center">
-                                <skia:SKLottieView
-                                    RepeatCount="-1"
-                                    HeightRequest="100"
-                                    WidthRequest="100"
-                                    Source="{Binding weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
+            <VerticalStackLayout BackgroundColor="{StaticResource CardBlue}" Padding="10">
+                <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Start" Padding="0, 0, 0, 10">
+                    <Image 
+                         Grid.Column="0"
+                         Margin="10"
+                         Source="clock.png"
+                         WidthRequest="20"
+                         HeightRequest="20"
+                         VerticalOptions="Center"/>
+                    <Label HorizontalOptions="Start" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="Prognoza 7-dniowa"/>
+                </HorizontalStackLayout>
+                <!-- Prognoza na kolejne dni (CollectionView) -->
+                <CollectionView ItemsSource="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.daily2}" HorizontalOptions="Center">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Style="{StaticResource Card}">
+                                <VerticalStackLayout VerticalOptions="Center">
+                                    <skia:SKLottieView
+                                        RepeatCount="-1"
+                                        HeightRequest="100"
+                                        WidthRequest="100"
+                                        Source="{Binding weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
 
-                                <BoxView HeightRequest="20" BackgroundColor="Transparent"/>
-                                <Label Padding="0, 0, 0, 5" TextColor="{StaticResource PastelYellow}" FontAttributes="Bold">
-                                    <Label.Style>
-                                        <Style TargetType="Label">
-                                            <Setter Property="Text" Value="{Binding time, Converter={StaticResource UnixTimestampToDateConverter}}" />
-                                            <Style.Triggers>
-                                                <DataTrigger TargetType="Label" Binding="{Binding isFirst}" Value="True">
-                                                    <Setter Property="Text" Value="Dzisiaj" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Label.Style>
-                                </Label>
-                                <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="{Binding temperature_2m_max, StringFormat='{0}°C'}"/>
-                                <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="{Binding weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
-                            </VerticalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                    <BoxView HeightRequest="20" BackgroundColor="Transparent"/>
+                                    <Label Padding="0, 0, 0, 5" TextColor="{StaticResource PastelYellow}" FontAttributes="Bold">
+                                        <Label.Style>
+                                            <Style TargetType="Label">
+                                                <Setter Property="Text" Value="{Binding time, Converter={StaticResource UnixTimestampToDateConverter}}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding isFirst}" Value="True">
+                                                        <Setter Property="Text" Value="Dzisiaj" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Label.Style>
+                                    </Label>
+                                    <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="{Binding temperature_2m_max, StringFormat='{0}°C'}"/>
+                                    <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="{Binding weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

@@ -158,9 +158,24 @@ public partial class WeatherView : ContentPage, INotifyPropertyChanged
                 isFirst = true;
                 for (int i = 0; i < WeatherData.hourly.time.Length; i++)
                 {
-                    if (WeatherData.hourly.time[i] <= DateTimeOffset.UtcNow.ToUnixTimeSeconds())
+                    if (WeatherData.hourly.time[i] < DateTimeOffset.UtcNow.ToUnixTimeSeconds())
                     {
                         continue;
+                    }
+
+                    if (isFirst && ((i - 1) >= 0))
+                    {
+                        WeatherData.hourly2.Add(new Hourly2
+                        {
+                            isFirst = isFirst,
+                            time = WeatherData.hourly.time[i - 1],
+                            weather_code = WeatherData.hourly.weather_code[i - 1],
+                            temperature_2m = WeatherData.hourly.temperature_2m[i - 1],
+                            rain = WeatherData.hourly.rain[i - 1],
+                            wind_speed_10m = WeatherData.hourly.wind_speed_10m[i - 1]
+                        });
+
+                        isFirst = false;
                     }
 
                     WeatherData.hourly2.Add(new Hourly2
