@@ -18,7 +18,10 @@
             <Label Text="{Binding Date, StringFormat='{0:dddd, dd MMMM yyyy}'}"/>
         </VerticalStackLayout>
 
-        <Grid ColumnDefinitions="*,*" Margin="0, 20, 0, 0">
+        <Grid 
+            ColumnDefinitions="*,*" 
+            Margin="0, 20, 0, 0">
+
             <VerticalStackLayout Grid.Column="0">
                 <!-- Animacja pogody -->
                 <skia:SKLottieView

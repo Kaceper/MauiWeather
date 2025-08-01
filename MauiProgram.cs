@@ -1,4 +1,13 @@
-﻿using Microsoft.Extensions.Logging;
+﻿#if ANDROID
+using Android.Views;
+using AndroidX.Core.View;
+using Google.Android.Material.AppBar;
+
+
+#endif
+
+using Microsoft.Extensions.Logging;
+using Microsoft.Maui.LifecycleEvents;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using System.Text;
 
@@ -8,6 +17,17 @@ namespace MauiWeather
     {
         public static MauiApp CreateMauiApp()
         {
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            {
+                System.Diagnostics.Debug.WriteLine("UnhandledException: " + e.ExceptionObject);
+            };
+
+            TaskScheduler.UnobservedTaskException += (sender, e) =>
+            {
+                System.Diagnostics.Debug.WriteLine("UnobservedTaskException: " + e.Exception.Message);
+                e.SetObserved();
+            };
+
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()

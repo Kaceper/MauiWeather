@@ -6,49 +6,40 @@
     xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
     x:Class="MauiWeather.Views.WeatherHeader">
 
-    <ContentPage.Resources>
+    <ContentView.Resources>
         <converters:CodeToWeatherConverter x:Key="CodeToWeatherConverter"/>
         <converters:CodeToLottieConverter x:Key="CodeToLottieConverter"/>
-    </ContentPage.Resources>
+    </ContentView.Resources>
 
     <VerticalStackLayout>
+
         <!-- Miasto i data -->
         <VerticalStackLayout>
             <Label Style="{StaticResource Title}" Text="{Binding PlaceName}"/>
             <Label Text="{Binding Date, StringFormat='{0:dddd, dd MMMM yyyy}'}"/>
         </VerticalStackLayout>
 
+        <!-- Animacja + mapa -->
         <OnPlatform x:TypeArguments="View">
             <On Platform="Android">
                 <VerticalStackLayout>
-                    <Grid
-                        ColumnDefinitions="*, *"
-                        HorizontalOptions="Fill">
-                        
-                        <!-- Animacja pogody -->
+                    <Grid ColumnDefinitions=".6*, .4*" HorizontalOptions="Fill">
                         <skia:SKLottieView
                             Grid.Column="0"
                             RepeatCount="-1"
-                            HeightRequest="{OnPlatform WinUI=450, Android=300}"
+                            HeightRequest="300"
                             Source="{Binding WeatherData.current.weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
-
-                        <!-- Pogoda (parametry) -->
-                        <Grid
-                            Grid.Column="1"
-                            HorizontalOptions="Fill"
-                            RowDefinitions="*, *, *"
-                            Margin="0, 50, 50, 0">
-
-                            <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Row="0" >
+                        <Grid Grid.Column="1" HorizontalOptions="Fill"
+                              RowDefinitions="*, *, *"
+                              Margin="0, 50, 50, 0">
+                            <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Row="0">
                                 <Label Style="{StaticResource WeatherTitle}" Text="Temperatura"/>
                                 <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.temperature_2m, StringFormat='{0}°C'}"/>
                             </VerticalStackLayout>
-
                             <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Row="1">
                                 <Label Style="{StaticResource WeatherTitle}" Text="Wiatr"/>
                                 <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.wind_speed_10m, StringFormat='{0}km/h'}"/>
                             </VerticalStackLayout>
-
                             <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Row="2">
                                 <Label Style="{StaticResource WeatherTitle}" Text="Pogoda"/>
                                 <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
@@ -56,46 +47,51 @@
                         </Grid>
                     </Grid>
 
-                    <Border
-                        StrokeThickness="0"
-                        BackgroundColor="White"
-                        Padding="0"
-                        StrokeShape="RoundRectangle 20">
-
-                        <WebView
-                            x:Name="MapWebViewAndroid"
-                            HeightRequest="250"
-                            HorizontalOptions="FillAndExpand"
-                            VerticalOptions="FillAndExpand"
-                            Source="azuremap.html"/>
+                    <Border StrokeThickness="0" BackgroundColor="White" Padding="0" StrokeShape="RoundRectangle 20">
+                        <WebView x:Name="MapWebViewAndroid"
+                                 HeightRequest="250"
+                                 HorizontalOptions="FillAndExpand"
+                                 VerticalOptions="FillAndExpand"
+                                 Source="azuremap.html"/>
                     </Border>
                 </VerticalStackLayout>
             </On>
+
             <On Platform="WinUI">
-                <Grid ColumnDefinitions="*,*" Margin="0, 20, 0, 0">
-                    <VerticalStackLayout Grid.Column="0">
-                        <!-- Animacja pogody -->
-                        <skia:SKLottieView
-                            RepeatCount="-1"
-                            HeightRequest="{OnPlatform WinUI=450, Android=300}"
-                            Source="{Binding WeatherData.current.weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
-                    </VerticalStackLayout>
+                <VerticalStackLayout>
+                    <Grid ColumnDefinitions="*,*" Margin="0, 20, 0, 0">
+                        <VerticalStackLayout Grid.Column="0">
+                            <skia:SKLottieView
+                                RepeatCount="-1"
+                                HeightRequest="450"
+                                Source="{Binding WeatherData.current.weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
+                        </VerticalStackLayout>
 
-                    <Border
-                        Grid.Column="1"
-                        StrokeThickness="0"
-                        BackgroundColor="White"
-                        Padding="0"
-                        StrokeShape="RoundRectangle 20">
+                        <Border Grid.Column="1" StrokeThickness="0" BackgroundColor="White" Padding="0" StrokeShape="RoundRectangle 20">
+                            <WebView x:Name="MapWebViewWindows"
+                                     HorizontalOptions="FillAndExpand"
+                                     VerticalOptions="FillAndExpand"
+                                     Source="azuremap.html"/>
+                        </Border>
+                    </Grid>
 
-                        <WebView
-                            x:Name="MapWebViewWinUI"
-                            HorizontalOptions="FillAndExpand"
-                            VerticalOptions="FillAndExpand"
-                            Source="azuremap.html"/>
-                    </Border>
-                </Grid>
+                    <Grid HorizontalOptions="Fill" ColumnDefinitions="*, *, *, *, *" Margin="0, 50, 0, 50">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Column="1">
+                            <Label Style="{StaticResource WeatherTitle}" Text="Temperatura"/>
+                            <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.temperature_2m, StringFormat='{0}°C'}"/>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Column="2">
+                            <Label Style="{StaticResource WeatherTitle}" Text="Wiatr"/>
+                            <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.wind_speed_10m, StringFormat='{0}km/h'}"/>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Column="3">
+                            <Label Style="{StaticResource WeatherTitle}" Text="Pogoda"/>
+                            <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </VerticalStackLayout>
             </On>
         </OnPlatform>
+
     </VerticalStackLayout>
 </ContentView>

@@ -39,8 +39,16 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
-
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<!-- W debug włącz mniej agresywne linkowanie (lub None) -->
 		<AndroidLinkMode>None</AndroidLinkMode>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<!-- W release optymalizuj, linkuj wszystko -->
+		<AndroidLinkMode>LinkAll</AndroidLinkMode>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -62,9 +70,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+	  <Compile Remove="Platforms\Android\DeviceInfo.Shared.cs" />
+	  <Compile Remove="Views\WeatherHeader.android.cs" />
+	  <Compile Remove="Views\WeatherHeader.windows.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Remove="Views\WeatherHeader.android.xaml" />
+	  <MauiXaml Remove="Views\WeatherHeader.windows.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="9.0.90" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="9.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0" />
 	</ItemGroup>
@@ -82,13 +101,7 @@
 	  <MauiXaml Update="Views\WeatherView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\WeatherHeader_Android.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\AppStyles.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\WeatherHeader_Windows.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
