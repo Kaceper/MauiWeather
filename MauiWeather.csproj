@@ -89,12 +89,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Resources\WeatherParametersGridRowDefsAndroid.xaml.cs">
+	    <DependentUpon>WeatherParametersGridRowDefsAndroid.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\WeatherHeader.xaml.cs">
 	    <DependentUpon>WeatherHeader.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Resources\WeatherParametersGridRowDefsAndroid.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\WeatherParametersGridRowDefsWindows.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\WeatherHeader.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

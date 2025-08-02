@@ -23,24 +23,32 @@
         <OnPlatform x:TypeArguments="View">
             <On Platform="Android">
                 <VerticalStackLayout>
-                    <Grid ColumnDefinitions=".6*, .4*" HorizontalOptions="Fill">
+                    <Grid ColumnDefinitions=".65*, .35*" HorizontalOptions="Fill">
                         <skia:SKLottieView
                             Grid.Column="0"
                             RepeatCount="-1"
                             HeightRequest="300"
                             Source="{Binding WeatherData.current.weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
-                        <Grid Grid.Column="1" HorizontalOptions="Fill"
-                              RowDefinitions="*, *, *"
-                              Margin="0, 50, 50, 0">
-                            <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Row="0">
+                        <Grid 
+                            Grid.Column="1"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Center"
+                            RowSpacing="15"
+                            RowDefinitions="*, *, *, *"
+                            Margin="0, 40, 0, 40">
+                            <VerticalStackLayout HorizontalOptions="Center" Spacing="2" Grid.Row="0">
                                 <Label Style="{StaticResource WeatherTitle}" Text="Temperatura"/>
                                 <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.temperature_2m, StringFormat='{0}°C'}"/>
                             </VerticalStackLayout>
-                            <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Row="1">
+                            <VerticalStackLayout HorizontalOptions="Center" Spacing="2" Grid.Row="1">
+                                <Label Style="{StaticResource WeatherTitle}" Text="Odczuwalna"/>
+                                <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.apparent_temperature, StringFormat='{0}°C'}"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout HorizontalOptions="Center" Spacing="2" Grid.Row="2">
                                 <Label Style="{StaticResource WeatherTitle}" Text="Wiatr"/>
                                 <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.wind_speed_10m, StringFormat='{0}km/h'}"/>
                             </VerticalStackLayout>
-                            <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Row="2">
+                            <VerticalStackLayout HorizontalOptions="Center" Spacing="2" Grid.Row="3">
                                 <Label Style="{StaticResource WeatherTitle}" Text="Pogoda"/>
                                 <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
                             </VerticalStackLayout>
@@ -75,16 +83,20 @@
                         </Border>
                     </Grid>
 
-                    <Grid HorizontalOptions="Fill" ColumnDefinitions="*, *, *, *, *" Margin="0, 50, 0, 50">
+                    <Grid HorizontalOptions="Fill" ColumnDefinitions="*, *, *, *, *, *" Margin="0, 50, 0, 50">
                         <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Column="1">
                             <Label Style="{StaticResource WeatherTitle}" Text="Temperatura"/>
                             <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.temperature_2m, StringFormat='{0}°C'}"/>
                         </VerticalStackLayout>
-                        <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Column="2">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="2" Grid.Column="2">
+                            <Label Style="{StaticResource WeatherTitle}" Text="Odczuwalna"/>
+                            <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.apparent_temperature, StringFormat='{0}°C'}"/>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Column="3">
                             <Label Style="{StaticResource WeatherTitle}" Text="Wiatr"/>
                             <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.wind_speed_10m, StringFormat='{0}km/h'}"/>
                         </VerticalStackLayout>
-                        <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Column="3">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="5" Grid.Column="4">
                             <Label Style="{StaticResource WeatherTitle}" Text="Pogoda"/>
                             <Label Style="{StaticResource WeatherValue}" Text="{Binding WeatherData.current.weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
                         </VerticalStackLayout>

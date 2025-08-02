@@ -46,4 +46,17 @@
         <Setter Property="WidthRequest" Value="{OnPlatform WinUI=200, Android=150}"/>
         <Setter Property="Opacity" Value="0.9"/>
     </Style>
+
+    <Style x:Key="WeatherParameter" TargetType="Frame">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource CardBlue}"/>
+        <Setter Property="BorderColor" Value="Transparent"/>
+        <Setter Property="CornerRadius" Value="15"/>
+        <Setter Property="HeightRequest" Value="{OnPlatform WinUI=300, Android=200}"/>
+        <Setter Property="WidthRequest" Value="{OnPlatform WinUI=300, Android=200}"/>
+        <Setter Property="HorizontalOptions" Value="{OnPlatform WinUI=Center, Android=FillAndExpand}"/>
+        <Setter Property="Opacity" Value="0.9"/>
+    </Style>
 </ResourceDictionary>

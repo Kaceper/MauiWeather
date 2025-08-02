@@ -4,6 +4,7 @@
     xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
     x:Class="MauiWeather.Views.WeatherView"
     xmlns:converters="clr-namespace:MauiWeather.Converters"
+    xmlns:customGrid="clr-namespace:MauiWeather.Views"
     x:Name="RootView"
     xmlns:views="clr-namespace:MauiWeather.Views">
 
@@ -163,10 +164,12 @@
                         <DataTemplate>
                             <Frame Style="{StaticResource Card}">
                                 <VerticalStackLayout VerticalOptions="Center">
+                                    <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" FontAttributes="Bold" TextColor="{StaticResource White}" Text="{Binding temperature_2m_max, StringFormat='{0}°C'}"/>
+                                    <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource Gray200}" Text="{Binding temperature_2m_min, StringFormat='{0}°C'}" Margin="0, 3, 0, 0"/>
                                     <skia:SKLottieView
                                         RepeatCount="-1"
-                                        HeightRequest="100"
-                                        WidthRequest="100"
+                                        HeightRequest="80"
+                                        WidthRequest="80"
                                         Source="{Binding weather_code, Converter={StaticResource CodeToLottieConverter}}"/>
 
                                     <BoxView HeightRequest="20" BackgroundColor="Transparent"/>
@@ -182,7 +185,6 @@
                                             </Style>
                                         </Label.Style>
                                     </Label>
-                                    <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="{Binding temperature_2m_max, StringFormat='{0}°C'}"/>
                                     <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="{Binding weather_code, Converter={StaticResource CodeToWeatherConverter}}"/>
                                 </VerticalStackLayout>
                             </Frame>
@@ -190,6 +192,23 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </VerticalStackLayout>
+
+            <Grid
+                HorizontalOptions="Center" VerticalOptions="Center"
+                RowDefinitions="Auto, Auto"
+                ColumnDefinitions="{StaticResource GridColumns}">
+                <Frame Style="{StaticResource WeatherParameter}" Grid.Row="0" Grid.Column="0">
+                    <VerticalStackLayout VerticalOptions="Center">
+
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Style="{StaticResource WeatherParameter}" Grid.Row="0" Grid.Column="1">
+                    <VerticalStackLayout VerticalOptions="Center">
+
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

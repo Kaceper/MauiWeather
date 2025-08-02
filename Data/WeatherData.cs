@@ -48,6 +48,7 @@ namespace MauiWeather.Data
         public int is_day { get; set; }
         public float rain { get; set; }
         public int weather_code { get; set; }
+        public float precipitation { get; set; }
     }
 
     public class Daily_Units

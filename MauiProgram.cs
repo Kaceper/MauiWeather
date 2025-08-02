@@ -2,8 +2,6 @@
 using Android.Views;
 using AndroidX.Core.View;
 using Google.Android.Material.AppBar;
-
-
 #endif
 
 using Microsoft.Extensions.Logging;
