@@ -23,6 +23,7 @@ namespace MauiWeather.Data
         public ObservableCollection<Daily2> daily2 { get; set; } = new ObservableCollection<Daily2>();
         public Hourly hourly { get; set; }
         public ObservableCollection<Hourly2> hourly2 { get; set; } = new ObservableCollection<Hourly2>();
+        public AdditionalParameters additionalParameters { get; set; } 
     }
 
     public class Current_Units
@@ -67,7 +68,24 @@ namespace MauiWeather.Data
         public int[] weather_code { get; set; }
         public float[] temperature_2m_max { get; set; }
         public float[] temperature_2m_min { get; set; }
+        public float[] apparent_temperature_max { get; set; }
+        public float[] apparent_temperature_min { get; set; }
+        public float[] uv_index_max { get; set; }
+        public float[] uv_index_clear_sky_max { get; set; }
+        public float[] sunshine_duration { get; set; }
+        public float[] daylight_duration { get; set; }
+        public int[] sunset { get; set; }
+        public int[] sunrise { get; set; }
         public float[] rain_sum { get; set; }
+        public float[] showers_sum { get; set; }
+        public float[] snowfall_sum { get; set; }
+        public float[] precipitation_sum { get; set; }
+        public float[] precipitation_hours { get; set; }
+        public float[] precipitation_probability_max { get; set; }
+        public float[] et0_fao_evapotranspiration { get; set; }
+        public float[] shortwave_radiation_sum { get; set; }
+        public float[] wind_direction_10m_dominant { get; set; }
+        public float[] wind_gusts_10m_max { get; set; }
         public float[] wind_speed_10m_max { get; set; }
     }
 
@@ -78,7 +96,24 @@ namespace MauiWeather.Data
         public int weather_code { get; set; }
         public float temperature_2m_max { get; set; }
         public float temperature_2m_min { get; set; }
+        public float apparent_temperature_max { get; set; }
+        public float apparent_temperature_min { get; set; }
+        public float uv_index_max { get; set; }
+        public float uv_index_clear_sky_max { get; set; }
+        public float sunshine_duration { get; set; }
+        public float daylight_duration { get; set; }
+        public int sunset { get; set; }
+        public int sunrise { get; set; }
         public float rain_sum { get; set; }
+        public float showers_sum { get; set; }
+        public float snowfall_sum { get; set; }
+        public float precipitation_sum { get; set; }
+        public float precipitation_hours { get; set; }
+        public float precipitation_probability_max { get; set; }
+        public float et0_fao_evapotranspiration { get; set; }
+        public float shortwave_radiation_sum { get; set; }
+        public float wind_direction_10m_dominant { get; set; }
+        public float wind_gusts_10m_max { get; set; }
         public float wind_speed_10m_max { get; set; }
     }
 
@@ -99,5 +134,15 @@ namespace MauiWeather.Data
         public float temperature_2m { get; set; }
         public float rain { get; set; }
         public float wind_speed_10m { get; set; }
+    }
+
+    public class AdditionalParameters
+    {
+        public float rain_sum { get; set; }
+        public float wind_speed_10m_max { get; set; }
+        public float wind_direction_10m_dominant { get; set; }
+        public int sunset { get; set; }
+        public int sunrise { get; set; }
+        public float uv_index_max { get; set; }
     }
 }

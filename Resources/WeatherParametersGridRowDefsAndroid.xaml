@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"        
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"            
     x:Class="MauiWeather.Resources.WeatherParametersGridRowDefsAndroid">
-    
+
     <ColumnDefinitionCollection x:Key="GridColumns">
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="*" />

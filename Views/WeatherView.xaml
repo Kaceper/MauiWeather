@@ -13,6 +13,9 @@
         <converters:CodeToLottieConverter x:Key="CodeToLottieConverter"/>
         <converters:UnixTimestampToDateConverter x:Key="UnixTimestampToDateConverter"/>
         <converters:UnixTimestampToHoursConverter x:Key="UnixTimestampToHoursConverter"/>
+        <converters:SunriseAndSunsetHoursConverter x:Key="SunriseAndSunsetHoursConverter"/>
+        <converters:WindDirectionConverter x:Key="WindDirectionConverter"/>
+        <converters:UVIndexToDescriptionConverter x:Key="UVIndexToDescriptionConverter"/>
     </ContentPage.Resources>
 
     <ScrollView>
@@ -46,7 +49,6 @@
 
             <views:WeatherHeader x:Name="WeatherHeader" BindingContext="{Binding}" />
 
-            <!-- Prognoza na kolejne godziny (CollectionView) -->
             <CollectionView ItemsSource="{Binding Source={x:Reference Name=RootView}, Path=WarningsMeteo}" HorizontalOptions="Center">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal"/>
@@ -84,7 +86,7 @@
                                         TextDecorations="Underline"
                                         Padding="4"
                                         InputTransparent="False">
-                                    
+
                                         <Label.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
                                         </Label.GestureRecognizers>
@@ -96,10 +98,9 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <VerticalStackLayout BackgroundColor="{StaticResource CardBlue}" Padding="10">
+            <VerticalStackLayout BackgroundColor="{StaticResource CardBlue}" Padding="10" HorizontalOptions="Center">
                 <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Start" Padding="0, 0, 0, 10">
                     <Image 
-                        Grid.Column="0"
                         Margin="10"
                         Source="calendar.png"
                         WidthRequest="20"
@@ -108,7 +109,7 @@
                     <Label HorizontalOptions="Start" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="Prognoza godzinowa"/>
                 </HorizontalStackLayout>
                 <!-- Prognoza na kolejne godziny (CollectionView) -->
-                <CollectionView ItemsSource="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.hourly2}" HorizontalOptions="Center">
+                <CollectionView ItemsSource="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.hourly2}" HorizontalOptions="Center" Margin="0, 0, 20, 10">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal"/>
                     </CollectionView.ItemsLayout>
@@ -144,7 +145,7 @@
                 </CollectionView>
             </VerticalStackLayout>
 
-            <VerticalStackLayout BackgroundColor="{StaticResource CardBlue}" Padding="10">
+            <VerticalStackLayout BackgroundColor="{StaticResource CardBlue}" Padding="10" HorizontalOptions="Center">
                 <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Start" Padding="0, 0, 0, 10">
                     <Image 
                          Grid.Column="0"
@@ -156,7 +157,7 @@
                     <Label HorizontalOptions="Start" HorizontalTextAlignment="Center" TextColor="{StaticResource White}" Text="Prognoza 7-dniowa"/>
                 </HorizontalStackLayout>
                 <!-- Prognoza na kolejne dni (CollectionView) -->
-                <CollectionView ItemsSource="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.daily2}" HorizontalOptions="Center">
+                <CollectionView ItemsSource="{Binding Source={x:Reference Name=RootView}, Path=WeatherData.daily2}" HorizontalOptions="Center" Margin="0, 0, 20, 10">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal"/>
                     </CollectionView.ItemsLayout>
@@ -192,21 +193,176 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </VerticalStackLayout>
-
+            
             <Grid
                 HorizontalOptions="Center" VerticalOptions="Center"
                 RowDefinitions="Auto, Auto"
+                ColumnSpacing="10"
+                RowSpacing="10"
                 ColumnDefinitions="{StaticResource GridColumns}">
                 <Frame Style="{StaticResource WeatherParameter}" Grid.Row="0" Grid.Column="0">
-                    <VerticalStackLayout VerticalOptions="Center">
+                    <Grid 
+                        VerticalOptions="Fill"
+                        RowDefinitions="Auto, *, Auto">
+                        <HorizontalStackLayout VerticalOptions="Start" HorizontalOptions="Start" Grid.Row="0">
+                            <Image 
+                                 Margin="0, 0, 10, 0"
+                                 Source="downfall.png"
+                                 WidthRequest="20"
+                                 HeightRequest="20"
+                                 VerticalOptions="Center"/>
+                            <Label TextColor="White" Text="Opady" HorizontalTextAlignment="Start" FontSize="15"/>
+                        </HorizontalStackLayout>
 
-                    </VerticalStackLayout>
+                        <Label  
+                            Grid.Row="1"
+                            TextColor="White" 
+                            Text="{Binding WeatherData.additionalParameters.rain_sum, StringFormat='{}{0:0.##} mm'}"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            HorizontalOptions="Center"
+                            FontSize="30"/>
+
+                        <Label  
+                            Grid.Row="2"
+                            TextColor="White" 
+                            Text="Dzienna suma opadów deszczu"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            HorizontalOptions="Center"
+                            FontSize="15"/>
+                    </Grid>
                 </Frame>
 
                 <Frame Style="{StaticResource WeatherParameter}" Grid.Row="0" Grid.Column="1">
-                    <VerticalStackLayout VerticalOptions="Center">
+                    <Grid 
+                        VerticalOptions="Fill"
+                        RowDefinitions="Auto, *, Auto">
 
-                    </VerticalStackLayout>
+                        <HorizontalStackLayout VerticalOptions="Start" HorizontalOptions="Start" Grid.Row="0">
+                            <Image 
+                                Margin="0, 0, 10, 0"
+                                Source="wind.png"
+                                WidthRequest="20"
+                                HeightRequest="20"
+                                VerticalOptions="Center"/>
+                            <Label TextColor="White" Text="Wiatr" HorizontalTextAlignment="Start" FontSize="15"/>
+                        </HorizontalStackLayout>
+
+                        <Label  
+                            Grid.Row="1"
+                            TextColor="White" 
+                            Text="{Binding WeatherData.additionalParameters.wind_speed_10m_max, StringFormat='{}{0:0.##} km/h'}"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            HorizontalOptions="Center"
+                            FontSize="30"/>
+
+                        <Label  
+                            Grid.Row="2"
+                            TextColor="White" 
+                            Text="{Binding WeatherData.additionalParameters.wind_direction_10m_dominant, Converter={StaticResource WindDirectionConverter}}"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            HorizontalOptions="Center"
+                            FontSize="15"/>
+                    </Grid>
+                </Frame>
+
+                <Frame Style="{StaticResource WeatherParameter}" Grid.Row="1" Grid.Column="0">
+                    <Grid 
+                        VerticalOptions="Fill"
+                        RowDefinitions="Auto, *, Auto">
+
+                        <HorizontalStackLayout>
+                            <Image 
+                                Margin="0, 0, 10, 0"
+                                Source="sunset.png"
+                                WidthRequest="20"
+                                HeightRequest="20"
+                                VerticalOptions="Center"/>
+                            <Label TextColor="White" Text="Wschód i zachód" HorizontalTextAlignment="Start" FontSize="15" LineBreakMode="WordWrap" MaxLines="2" HorizontalOptions="FillAndExpand" MaximumWidthRequest="120"/>
+                        </HorizontalStackLayout>
+
+                        <VerticalStackLayout Grid.Row="1" VerticalOptions="Center" HorizontalOptions="Center">
+                            <HorizontalStackLayout HorizontalOptions="Center">
+                                <Image 
+                                    Margin="0, 0, 10, 0"
+                                    Source="sunrise.png"
+                                    WidthRequest="20"
+                                    HeightRequest="20"
+                                    VerticalOptions="Center"/>
+                            
+                                <Label  
+                                    Grid.Row="1"
+                                    TextColor="White" 
+                                    Text="{Binding WeatherData.additionalParameters.sunrise, Converter={StaticResource SunriseAndSunsetHoursConverter}}"
+                                    HorizontalTextAlignment="Center"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalOptions="Center"
+                                    FontSize="20"/>
+                            </HorizontalStackLayout>
+
+                            <HorizontalStackLayout HorizontalOptions="Center">
+                                <Image 
+                                    Margin="0, 0, 10, 0"
+                                    Source="sunset_small.png"
+                                    WidthRequest="20"
+                                    HeightRequest="20"
+                                    VerticalOptions="Center"/>
+
+                                <Label  
+                                    Grid.Row="1"
+                                    TextColor="White" 
+                                    Text="{Binding WeatherData.additionalParameters.sunset, Converter={StaticResource SunriseAndSunsetHoursConverter}}"
+                                    HorizontalTextAlignment="Center"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalOptions="Center"
+                                    FontSize="20"/>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame Style="{StaticResource WeatherParameter}" Grid.Row="1" Grid.Column="1">
+                    <Grid 
+                        VerticalOptions="Fill"
+                        RowDefinitions="Auto, *, Auto">
+
+                        <HorizontalStackLayout VerticalOptions="Start" HorizontalOptions="Start" Grid.Row="0">
+                            <Image 
+                                Margin="0, 0, 10, 0"
+                                Source="uv.png"
+                                WidthRequest="20"
+                                HeightRequest="20"
+                                VerticalOptions="Center"/>
+                            <Label TextColor="White" Text="Indev UV" HorizontalTextAlignment="Start" FontSize="15"/>
+                        </HorizontalStackLayout>
+
+                        <Label  
+                            Grid.Row="1"
+                            TextColor="White" 
+                            Text="{Binding WeatherData.additionalParameters.uv_index_max}"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            HorizontalOptions="Center">
+                            <Label.FontSize>
+                                <OnPlatform x:TypeArguments="x:Double">
+                                    <On Platform="Android" Value="30" />
+                                    <On Platform="WinUI" Value="40" />
+                                </OnPlatform>
+                            </Label.FontSize>
+                        </Label>
+
+                        <Label  
+                            Grid.Row="2"
+                            TextColor="White" 
+                            Text="{Binding WeatherData.additionalParameters.uv_index_max, Converter={StaticResource UVIndexToDescriptionConverter}}"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            HorizontalOptions="Center"
+                            FontSize="15"/>
+                    </Grid>
                 </Frame>
             </Grid>
         </VerticalStackLayout>

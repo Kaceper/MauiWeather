@@ -135,6 +135,19 @@ public partial class WeatherView : ContentPage, INotifyPropertyChanged
             {
                 WeatherData = await new Rest.GetWeather().GetWeatherAsync(location.Latitude, location.Longitude);
 
+                if (WeatherData.daily.time.Length > 0)
+                {
+                    WeatherData.additionalParameters = new AdditionalParameters
+                    {
+                        rain_sum = WeatherData.daily.rain_sum[0],
+                        wind_speed_10m_max = WeatherData.daily.wind_speed_10m_max[0],
+                        wind_direction_10m_dominant = WeatherData.daily.wind_direction_10m_dominant[0],
+                        sunset = WeatherData.daily.sunset[0],
+                        sunrise = WeatherData.daily.sunrise[0],
+                        uv_index_max = WeatherData.daily.uv_index_max[0],
+                    };
+                }
+
                 bool isFirst = true;
                 for (int i = 0; i < WeatherData.daily.time.Length; i++)
                 {
@@ -145,8 +158,24 @@ public partial class WeatherView : ContentPage, INotifyPropertyChanged
                         weather_code = WeatherData.daily.weather_code[i],
                         temperature_2m_max = WeatherData.daily.temperature_2m_max[i],
                         temperature_2m_min = WeatherData.daily.temperature_2m_min[i],
+                        apparent_temperature_min = WeatherData.daily.apparent_temperature_min[i],
+                        apparent_temperature_max = WeatherData.daily.apparent_temperature_max[i],
+                        uv_index_max = WeatherData.daily.uv_index_max[i],
+                        uv_index_clear_sky_max = WeatherData.daily.uv_index_clear_sky_max[i],
+                        sunshine_duration = WeatherData.daily.sunshine_duration[i],
+                        daylight_duration = WeatherData.daily.daylight_duration[i],
+                        sunset = WeatherData.daily.sunset[i],
+                        sunrise = WeatherData.daily.sunrise[i],
                         rain_sum = WeatherData.daily.rain_sum[i],
-                        wind_speed_10m_max = WeatherData.daily.wind_speed_10m_max[i]
+                        showers_sum = WeatherData.daily.showers_sum[i],
+                        snowfall_sum = WeatherData.daily.snowfall_sum[i],
+                        precipitation_sum = WeatherData.daily.precipitation_sum[i],
+                        precipitation_hours = WeatherData.daily.precipitation_hours[i],
+                        precipitation_probability_max = WeatherData.daily.precipitation_probability_max[i],
+                        et0_fao_evapotranspiration = WeatherData.daily.et0_fao_evapotranspiration[i],
+                        wind_direction_10m_dominant = WeatherData.daily.wind_direction_10m_dominant[i],
+                        wind_gusts_10m_max = WeatherData.daily.wind_gusts_10m_max[i],
+                        wind_speed_10m_max = WeatherData.daily.wind_speed_10m_max[i],
                     });
 
                     if (isFirst)
@@ -198,7 +227,9 @@ public partial class WeatherView : ContentPage, INotifyPropertyChanged
                         break;
                     }
                 }
-                
+
+                OnPropertyChanged(nameof(WeatherData));
+
                 string kodGminy = LoadPlaceGminaTerytCode();
 
                 if (!string.IsNullOrEmpty(kodGminy))
